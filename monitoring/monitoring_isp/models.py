@@ -6,34 +6,37 @@ User = get_user_model()
 class Uch(models.Model):
     numer = models.PositiveSmallIntegerField()
     
+    def __str__(self) -> str:
+        return f'Судебный участок {self.numer}'
+    
 class Server(models.Model):
     ip = models.GenericIPAddressField(protocol='both', unpack_ipv4=True)
     dnsname = models.CharField(max_length=30)
 
+    def __str__(self) -> str:
+        return f' {self.dnsname} ip: {self.ip}'
+
 class DbAmirs(models.Model):
-    ipserver = models.ForeignKey(Server, verbose_name='IP',
-                               related_name='ip_dbamirs',
+    server = models.ForeignKey(Server, verbose_name='server',
+                               related_name='dbamirs',
                                on_delete=models.CASCADE)
-    servername = models.ForeignKey(Server, verbose_name='servername',
-                               related_name='name_dbamirs',
-                               on_delete=models.CASCADE)
-    nomeruch = models.ForeignKey(Server, verbose_name='nomeruch',
+    nomeruch = models.ForeignKey(Uch, verbose_name='nomeruch',
                                related_name='uch_dbamirs',
                                on_delete=models.CASCADE)
     port = models.PositiveSmallIntegerField(default=3050)
     pathtodb = models.CharField(max_length=500)   
-    receiveddoc = models.PositiveSmallIntegerField()
-    opencase = models.PositiveSmallIntegerField()
-    login = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
+    login = models.CharField(max_length=100, default='SYSDBA')
+    password = models.CharField(max_length=100, default='masterkey')
+    sql_dialect = models.PositiveSmallIntegerField(default=3)
+    charset = models.CharField(max_length=100, default='WIN1251')
     
     class Meta:
         ordering = ['nomeruch']
 
 class MonitoringIsp(models.Model):
     receiveddoc = models.PositiveSmallIntegerField()
-    received = models.PositiveSmallIntegerField()
-    nomeruch = models.ForeignKey(Server, verbose_name='IP',
-                               related_name='uch_isp',
+    opencase = models.PositiveSmallIntegerField()
+    nomeruch = models.ForeignKey(Uch, verbose_name='nomeruch',
+                               related_name='MonitoringIsp',
                                on_delete=models.CASCADE)
     monitoringdata = models.DateTimeField('Добавлен', auto_now_add=True) 
