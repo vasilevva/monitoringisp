@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="content">
+        <div class="card">
+        <img class="card-image" src="{% static 'img/isp.jpg' %}">
+            <p class="card-text">Мониторинг направленных в ФССП исполнительных листов.</p>
+        </div>
+        <div class="card no-right-margin" >
+        <img class="card-image" src="{% static 'img/card-2.jpg' %}">
+        <p class="card-text" >Здесь пока ничего нет,</p>
+        <p class="card-text" >но место уже занято.</p>
+        </div>
+        <div class="card">
+        <img class="card-image" src="{% static 'img/card-3.jpg' %}">
+        <p class="card-text" >Здесь пока ничего нет,</p>
+        <p class="card-text" >но место уже занято.</p>
+        </div>
+        <div class="card no-right-margin" >
+        <img class="card-image" src="{% static 'img/card-4.jpg' %}">
+        <p class="card-text" >Здесь пока ничего нет,</p>
+        <p class="card-text" >но место уже занято.</p>
+        </div>
+    </section>
+{% endblock %}
