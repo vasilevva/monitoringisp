@@ -2,11 +2,16 @@
 {% block content %}
     <br><br><br><br><br>  
       <div class="container">
+        <form action="{% url 'monitoring_isp:monitorig_isp' %}" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Обновить данные</button>
+        </form>
         <table class="table table-hover">
           <thead>
             <tr>
               <th>№ C/У МС</th>
-              <th>Напрвлено дел</th>
+              <th>Направлено листов</th>
               <th>Возбуждено дел</th>
               <th>Дата мониторинга</th>
             </tr>

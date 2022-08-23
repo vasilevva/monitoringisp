@@ -18,11 +18,9 @@ from django.urls import include, path
 
 from . import views
 
-app_name = 'monitorigisp'
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('monitorigisp/', include('monitoring_isp.urls'), name='monitorigisp'),
+    path('monitorigisp/', include('monitoring_isp.urls', namespace='monitoring_isp')),
     path('', views.index),
     
 ]
