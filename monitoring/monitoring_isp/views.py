@@ -26,4 +26,4 @@ def monitorigisp(request):
     return render(request, 'monitoring_isp/monitorigisp.html', context)
 
 def monitorigisp_detail(request, pk):
-    return HttpResponse(f'Судебный участок {pk}') 
+    return HttpResponse(f'Судебный участок {pk}')
