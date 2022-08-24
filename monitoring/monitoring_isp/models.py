@@ -5,9 +5,12 @@ User = get_user_model()
 
 class Uch(models.Model):
     numer = models.PositiveSmallIntegerField()
-    
+        
     def __str__(self) -> str:
         return f'Судебный участок {self.numer}'
+    
+    class Meta:
+        ordering = ['numer']
     
 class Server(models.Model):
     ip = models.GenericIPAddressField(protocol='both', unpack_ipv4=True)
