@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import UpdateMonitoringForm
-from .models import MonitoringIsp
+from .models import DbAmirs, MonitoringIsp
 
 
 def monitorigisp(request):
@@ -21,7 +21,15 @@ def monitorigisp(request):
         'form': form,
     }
     if request.method == 'POST' and form.is_valid():
-        print(form.cleaned_data)
+        objuch = form.cleaned_data['nomeruch']
+        #nomeruch = getattr(objuch, 'numer')
+        #obj_dbamirs = DbAmirs.objects.filter(nomeruch=nomeruch)
+        obj_dbamirs = get_object_or_404(DbAmirs, nomeruch=objuch)
+        server = 
+        path =
+        port =
+        host = 
+        print(lll)
         print('!!!!!!!!!!!!!!!!!!!!!')
     return render(request, 'monitoring_isp/monitorigisp.html', context)
 

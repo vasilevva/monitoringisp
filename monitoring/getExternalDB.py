@@ -1,8 +1,8 @@
 import fdb
 
-con = fdb.connect(host='192.168.201.173',
+con = fdb.connect(host='192.168.31.188',
                   port=3050,
-                  database='E:/database/AMIRS_3-test.FDB',
+                  database='C:/database/AMIRS_3-test.FDB',
                   user='SYSDBA',
                   password='masterkey',
                   sql_dialect=3,
@@ -14,4 +14,4 @@ for result in cur:
 con.close()
 
 
-con = fdb.connect(host='172.16.0.123', port=3050, database='E:/database/AMIRS_3-test.FDB', user='SYSDBA', password='masterkey', sql_dialect=3, charset='WIN1251')
+#con = fdb.connect(host='172.16.0.123', port=3050, database='E:/database/AMIRS_3-test.FDB', user='SYSDBA', password='masterkey', sql_dialect=3, charset='WIN1251')
