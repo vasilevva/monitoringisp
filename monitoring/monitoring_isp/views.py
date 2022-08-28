@@ -18,10 +18,10 @@ def get_monitoringisp_data(host, port, path, user, password, sql_dialect, charse
     )
     cur = con.cursor()
     cur.execute('''
-        SELECT COUNT("OID") 
+        SELECT COUNT(DISTINCT "ExternalQuery")
         FROM "ExternalSystemLogRecord" 
         WHERE "LogMessage" 
-        LIKE 'Создана квитанция о подтверждении%';
+        LIKE 'Создана квитанция о подтверждении приема сообщения%';
     ''')
     receiveddoc = cur.fetchall()[0][0]
     cur.execute('''

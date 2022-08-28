@@ -8,7 +8,7 @@ con = fdb.connect(host='192.168.31.188',
                   sql_dialect=3,
                   charset='WIN1251')
 cur = con.cursor()
-cur.execute('''SELECT COUNT("OID") FROM "ExternalSystemLogRecord" WHERE "LogMessage" LIKE 'Создана квитанция о подтверждении%';''')
+cur.execute('''SELECT COUNT(DISTINCT "ExternalQuery") FROM "ExternalSystemLogRecord" WHERE "LogMessage" LIKE 'Создана квитанция о подтверждении%';''')
 for result in cur:
     print(result)
 con.close()
