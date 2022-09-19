@@ -1,3 +1,5 @@
+from ast import Not, Return
+
 import fdb
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -7,30 +9,40 @@ from .models import DbAmirs, MonitoringIsp
 
 
 def get_monitoringisp_data(host, port, path, user, password, sql_dialect, charset):
-    con = fdb.connect(
-        host=host,
-        port=port,
-        database=path,
-        user=user,
-        password=password,
-        sql_dialect=sql_dialect,
-        charset=charset
-    )
-    cur = con.cursor()
-    cur.execute('''
-        SELECT COUNT(DISTINCT "ExternalQuery")
-        FROM "ExternalSystemLogRecord" 
-        WHERE "LogMessage" 
-        LIKE 'Создана квитанция о подтверждении приема сообщения%';
-    ''')
-    receiveddoc = cur.fetchall()[0][0]
-    cur.execute('''
-        SELECT COUNT("OID") 
-        FROM "ExternalSystemLogRecord" 
-        WHERE "LogMessage" 
-        LIKE '%Постановление о возбуждении исполнительного производства%';''')
-    opencase=cur.fetchall()[0][0]
-    con.close()
+    try:
+        con = fdb.connect(
+            host=host,
+            port=port,
+            database=path,
+            user=user,
+            password=password,
+            sql_dialect=sql_dialect,
+            charset=charset
+        )
+        try:
+            cur = con.cursor()
+            cur.execute('''
+                SELECT COUNT(DISTINCT "ExternalQuery")
+                FROM "ExternalSystemLogRecord" 
+                WHERE "LogMessage" 
+                LIKE 'Создана квитанция о подтверждении приема сообщения%';
+            ''')
+            receiveddoc = cur.fetchall()[0][0]
+            cur.execute('''
+                SELECT COUNT("OID") 
+                FROM "ExternalSystemLogRecord" 
+                WHERE "LogMessage" 
+                LIKE '%Постановление о возбуждении исполнительного производства%';
+            ''')
+            opencase=cur.fetchall()[0][0]
+        except Exception as error:
+            print(error) 
+            return None
+        finally:
+            con.close()
+    except Exception as error:
+        print(error) 
+        return None
     return {'receiveddoc': receiveddoc, 'opencase': opencase}
 
 
@@ -61,18 +73,19 @@ def monitorigisp(request):
             sql_dialect=obj_dbamirs.sql_dialect,
             charset=obj_dbamirs.charset
         )
-        MonitoringIsp.objects.create(
-            receiveddoc=monitoringdata['receiveddoc'],
-            opencase=monitoringdata['opencase'],
-            nomeruch=objuch
-        )
-        '''
-        MonitoringIsp.objects.create(
-            receiveddoc=0,
-            opencase=0,
-            nomeruch=objuch
-        )
-        '''
+        if monitoringdata is not None:
+            MonitoringIsp.objects.create(
+                receiveddoc=monitoringdata['receiveddoc'],
+                opencase=monitoringdata['opencase'],
+                nomeruch=objuch
+            )
+            '''
+            MonitoringIsp.objects.create(
+                receiveddoc=0,
+                opencase=0,
+                nomeruch=objuch
+            )
+            '''
         return redirect('monitoring_isp:monitorig_isp')
         
     return render(request, 'monitoring_isp/monitorigisp.html', context)
